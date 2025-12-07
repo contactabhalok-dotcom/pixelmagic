@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PixelMagic - AI Image Editor Suite</title>
+    <meta name="description" content="AI-powered image editing tools: Background Remover, Cropper, Resizer, and Upscaler">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%236366F1'%3E%3Cpath d='M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5'/%3E%3C/svg%3E">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <a href="index.html" class="logo">
+                <div class="logo-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+                        <polyline points="2 17 12 22 22 17"></polyline>
+                        <polyline points="2 12 12 17 22 12"></polyline>
+                    </svg>
+                </div>
+                PixelMagic
+            </a>
+            <ul class="nav-links">
+                <li><a href="index.html" class="active">Home</a></li>
+                <li><a href="bg-remover.html">BG Remover</a></li>
+                <li><a href="cropper.html">Crop</a></li>
+                <li><a href="resize.html">Resize</a></li>
+                <li><a href="upscale.html">Upscale</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <h1 class="hero-title">AI Image Tools That Feel Like Magic</h1>
+        <p class="hero-subtitle">Professional image editing powered by AI. Remove backgrounds, crop, resize, and upscale your images in seconds.</p>
+
+        <!-- Upload Card -->
+        <div class="upload-card glass-card">
+            <div class="upload-area" id="uploadArea">
+                <div class="upload-icon">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                        <polyline points="17 8 12 3 7 8"></polyline>
+                        <line x1="12" y1="3" x2="12" y2="15"></line>
+                    </svg>
+                </div>
+                <p class="upload-text">Drag & drop your image here</p>
+                <p class="upload-hint">or click to browse (JPG, PNG - Max 10MB)</p>
+                <input type="file" class="upload-input" id="fileInput" accept="image/jpeg,image/png,image/webp">
+            </div>
+            <div class="mt-3">
+                <button class="btn btn-primary w-full" id="uploadBtn">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                        <polyline points="17 8 12 3 7 8"></polyline>
+                        <line x1="12" y1="3" x2="12" y2="15"></line>
+                    </svg>
+                    Upload Image
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tools Section -->
+    <section class="tools-section">
+        <div class="container">
+            <h2 class="section-title">Choose Your Tool</h2>
+            <div class="tools-grid">
+                <!-- BG Remover -->
+                <a href="bg-remover.html" class="tool-card glass-card">
+                    <div class="tool-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M5 3a2 2 0 0 0-2 2"></path>
+                            <path d="M19 3a2 2 0 0 1 2 2"></path>
+                            <path d="M21 19a2 2 0 0 1-2 2"></path>
+                            <path d="M5 21a2 2 0 0 1-2-2"></path>
+                            <path d="M9 3h1"></path>
+                            <path d="M9 21h1"></path>
+                            <path d="M14 3h1"></path>
+                            <path d="M14 21h1"></path>
+                            <path d="M3 9v1"></path>
+                            <path d="M21 9v1"></path>
+                            <path d="M3 14v1"></path>
+                            <path d="M21 14v1"></path>
+                            <circle cx="12" cy="12" r="3"></circle>
+                        </svg>
+                    </div>
+                    <h3 class="tool-title">BG Remover</h3>
+                    <p class="tool-desc">100% clean cut with AI-powered edge detection</p>
+                </a>
+
+                <!-- Crop Tool -->
+                <a href="cropper.html" class="tool-card glass-card">
+                    <div class="tool-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M6 2v14a2 2 0 0 0 2 2h14"></path>
+                            <path d="M18 22V8a2 2 0 0 0-2-2H2"></path>
+                        </svg>
+                    </div>
+                    <h3 class="tool-title">Crop Tool</h3>
+                    <p class="tool-desc">Mobile-style smooth cropping with aspect ratios</p>
+                </a>
+
+                <!-- Resize Tool -->
+                <a href="resize.html" class="tool-card glass-card">
+                    <div class="tool-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="15 3 21 3 21 9"></polyline>
+                            <polyline points="9 21 3 21 3 15"></polyline>
+                            <line x1="21" y1="3" x2="14" y2="10"></line>
+                            <line x1="3" y1="21" x2="10" y2="14"></line>
+                        </svg>
+                    </div>
+                    <h3 class="tool-title">Resize Tool</h3>
+                    <p class="tool-desc">Pixel-perfect resizing with multiple modes</p>
+                </a>
+
+                <!-- Upscale Tool -->
+                <a href="upscale.html" class="tool-card glass-card">
+                    <div class="tool-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline>
+                            <polyline points="17 6 23 6 23 12"></polyline>
+                        </svg>
+                    </div>
+                    <h3 class="tool-title">Upscale Tool</h3>
+                    <p class="tool-desc">2x / 4x / 8x AI-powered super resolution</p>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script src="assets/js/upload.js"></script>
+    <script>
+        // Initialize upload on home page
+        document.addEventListener('DOMContentLoaded', () => {
+            const uploadArea = document.getElementById('uploadArea');
+            const fileInput = document.getElementById('fileInput');
+            const uploadBtn = document.getElementById('uploadBtn');
+
+            // Drag and drop handling
+            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(event => {
+                uploadArea.addEventListener(event, (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                });
+            });
+
+            ['dragenter', 'dragover'].forEach(event => {
+                uploadArea.addEventListener(event, () => {
+                    uploadArea.classList.add('dragover');
+                });
+            });
+
+            ['dragleave', 'drop'].forEach(event => {
+                uploadArea.addEventListener(event, () => {
+                    uploadArea.classList.remove('dragover');
+                });
+            });
+
+            uploadArea.addEventListener('drop', (e) => {
+                const files = e.dataTransfer.files;
+                if (files.length > 0) {
+                    handleFileSelect(files[0]);
+                }
+            });
+
+            uploadArea.addEventListener('click', () => {
+                fileInput.click();
+            });
+
+            fileInput.addEventListener('change', (e) => {
+                if (e.target.files.length > 0) {
+                    handleFileSelect(e.target.files[0]);
+                }
+            });
+
+            uploadBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                fileInput.click();
+            });
+
+            function handleFileSelect(file) {
+                // Store file in session storage and redirect to tool selection
+                const validTypes = ['image/jpeg', 'image/png', 'image/webp'];
+                if (!validTypes.includes(file.type)) {
+                    showToast('Invalid file type. Please upload JPG, PNG, or WebP.', 'error');
+                    return;
+                }
+
+                if (file.size > 10 * 1024 * 1024) {
+                    showToast('File too large. Maximum size is 10MB.', 'error');
+                    return;
+                }
+
+                // Store file info
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    sessionStorage.setItem('pendingImage', e.target.result);
+                    sessionStorage.setItem('pendingImageName', file.name);
+                    showToolSelector();
+                };
+                reader.readAsDataURL(file);
+            }
+
+            function showToolSelector() {
+                // Show a quick tool selection modal or redirect to BG remover as default
+                showToast('Image uploaded! Select a tool to continue.', 'success');
+                // For now, redirect to BG remover
+                setTimeout(() => {
+                    window.location.href = 'bg-remover.html';
+                }, 1000);
+            }
+
+            function showToast(message, type = 'info') {
+                const container = document.getElementById('toastContainer');
+                const toast = document.createElement('div');
+                toast.className = `toast ${type}`;
+                toast.textContent = message;
+                container.appendChild(toast);
+
+                setTimeout(() => {
+                    toast.style.opacity = '0';
+                    toast.style.transform = 'translateX(100%)';
+                    setTimeout(() => toast.remove(), 300);
+                }, 3000);
+            }
+        });
+    </script>
+</body>
+</html>

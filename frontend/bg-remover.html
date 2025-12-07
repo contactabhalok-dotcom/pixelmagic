@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Background Remover - PixelMagic</title>
+    <meta name="description" content="AI-powered background removal with clean edges and hair detection">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%236366F1'%3E%3Cpath d='M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5'/%3E%3C/svg%3E">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <a href="index.html" class="logo">
+                <div class="logo-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+                        <polyline points="2 17 12 22 22 17"></polyline>
+                        <polyline points="2 12 12 17 22 12"></polyline>
+                    </svg>
+                </div>
+                PixelMagic
+            </a>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="bg-remover.html" class="active">BG Remover</a></li>
+                <li><a href="cropper.html">Crop</a></li>
+                <li><a href="resize.html">Resize</a></li>
+                <li><a href="upscale.html">Upscale</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Editor Page -->
+    <div class="editor-page">
+        <div class="editor-container">
+            <!-- Original Image Panel -->
+            <div class="editor-panel glass-card">
+                <div class="panel-title">Original Image</div>
+                <div class="image-preview" id="originalPreview">
+                    <div class="empty-state" id="emptyState">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                            <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                            <polyline points="21 15 16 10 5 21"></polyline>
+                        </svg>
+                        <p>Upload an image to get started</p>
+                        <button class="btn btn-primary mt-2" id="selectImageBtn">
+                            Select Image
+                        </button>
+                        <input type="file" id="fileInput" accept="image/jpeg,image/png,image/webp" class="hidden">
+                    </div>
+                    <img id="originalImage" class="hidden" alt="Original">
+                </div>
+            </div>
+
+            <!-- Result Panel -->
+            <div class="editor-panel glass-card">
+                <div class="panel-title">Background Removed</div>
+                <div class="image-preview checkerboard" id="resultPreview">
+                    <div class="empty-state" id="resultEmpty">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M5 3a2 2 0 0 0-2 2"></path>
+                            <path d="M19 3a2 2 0 0 1 2 2"></path>
+                            <path d="M21 19a2 2 0 0 1-2 2"></path>
+                            <path d="M5 21a2 2 0 0 1-2-2"></path>
+                            <path d="M9 3h1"></path>
+                            <path d="M9 21h1"></path>
+                            <path d="M14 3h1"></path>
+                            <path d="M14 21h1"></path>
+                            <path d="M3 9v1"></path>
+                            <path d="M21 9v1"></path>
+                            <path d="M3 14v1"></path>
+                            <path d="M21 14v1"></path>
+                        </svg>
+                        <p>Result will appear here</p>
+                    </div>
+                    <img id="resultImage" class="hidden" alt="Result">
+                    <div class="loading-overlay hidden" id="loadingOverlay">
+                        <div class="spinner"></div>
+                        <p class="loading-text">Removing background...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Toolbar -->
+        <div class="container">
+            <div class="toolbar glass-card">
+                <div class="toolbar-row">
+                    <div class="slider-group">
+                        <div class="slider-label">
+                            <span>Edge Softness</span>
+                            <span id="softnessValue">0</span>
+                        </div>
+                        <input type="range" class="slider" id="softnessSlider" min="0" max="10" value="0">
+                    </div>
+                    <div class="slider-group">
+                        <div class="slider-label">
+                            <span>Feather</span>
+                            <span id="featherValue">0</span>
+                        </div>
+                        <input type="range" class="slider" id="featherSlider" min="0" max="10" value="0">
+                    </div>
+                </div>
+
+                <div class="toolbar-row">
+                    <div class="input-group">
+                        <label>Replace Background</label>
+                        <div class="flex gap-1">
+                            <input type="color" id="bgColor" value="#ffffff" style="width: 44px; height: 38px; padding: 2px; cursor: pointer;">
+                            <button class="btn btn-secondary" id="uploadBgBtn">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                                    <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                                    <polyline points="21 15 16 10 5 21"></polyline>
+                                </svg>
+                                Custom Image
+                            </button>
+                            <input type="file" id="bgImageInput" accept="image/*" class="hidden">
+                            <button class="btn btn-ghost" id="clearBgBtn" title="Clear background">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="action-buttons">
+                    <button class="btn btn-secondary" id="resetBtn" disabled>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="1 4 1 10 7 10"></polyline>
+                            <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path>
+                        </svg>
+                        Reset
+                    </button>
+                    <button class="btn btn-primary" id="processBtn" disabled>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M5 3a2 2 0 0 0-2 2"></path>
+                            <path d="M19 3a2 2 0 0 1 2 2"></path>
+                            <path d="M21 19a2 2 0 0 1-2 2"></path>
+                            <path d="M5 21a2 2 0 0 1-2-2"></path>
+                            <circle cx="12" cy="12" r="3"></circle>
+                        </svg>
+                        Remove Background
+                    </button>
+                    <button class="btn btn-primary" id="downloadBtn" disabled>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                            <polyline points="7 10 12 15 17 10"></polyline>
+                            <line x1="12" y1="15" x2="12" y2="3"></line>
+                        </svg>
+                        Download PNG
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script src="assets/js/utils.js"></script>
+    <script src="assets/js/bgremove.js"></script>
+</body>
+</html>

@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Resizer - PixelMagic</title>
+    <meta name="description" content="Resize images with pixel-perfect precision and multiple modes">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%236366F1'%3E%3Cpath d='M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5'/%3E%3C/svg%3E">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <a href="index.html" class="logo">
+                <div class="logo-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+                        <polyline points="2 17 12 22 22 17"></polyline>
+                        <polyline points="2 12 12 17 22 12"></polyline>
+                    </svg>
+                </div>
+                PixelMagic
+            </a>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="bg-remover.html">BG Remover</a></li>
+                <li><a href="cropper.html">Crop</a></li>
+                <li><a href="resize.html" class="active">Resize</a></li>
+                <li><a href="upscale.html">Upscale</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Editor Page -->
+    <div class="editor-page">
+        <div class="editor-container">
+            <!-- Original Image Panel -->
+            <div class="editor-panel glass-card">
+                <div class="panel-title">Original Image</div>
+                <div class="image-preview" id="originalPreview">
+                    <div class="empty-state" id="emptyState">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <polyline points="15 3 21 3 21 9"></polyline>
+                            <polyline points="9 21 3 21 3 15"></polyline>
+                            <line x1="21" y1="3" x2="14" y2="10"></line>
+                            <line x1="3" y1="21" x2="10" y2="14"></line>
+                        </svg>
+                        <p>Upload an image to resize</p>
+                        <button class="btn btn-primary mt-2" id="selectImageBtn">
+                            Select Image
+                        </button>
+                        <input type="file" id="fileInput" accept="image/jpeg,image/png,image/webp" class="hidden">
+                    </div>
+                    <img id="originalImage" class="hidden" alt="Original">
+                </div>
+                <div class="mt-2 text-center hidden" id="originalInfo">
+                    <span class="text-muted" id="originalDimensions">0 x 0 px</span>
+                </div>
+            </div>
+
+            <!-- Result Panel -->
+            <div class="editor-panel glass-card">
+                <div class="panel-title">Resized Preview</div>
+                <div class="image-preview" id="resultPreview">
+                    <div class="empty-state" id="resultEmpty">
+                        <p>Resized preview will appear here</p>
+                    </div>
+                    <img id="resultImage" class="hidden" alt="Result">
+                    <div class="loading-overlay hidden" id="loadingOverlay">
+                        <div class="spinner"></div>
+                        <p class="loading-text">Resizing image...</p>
+                    </div>
+                </div>
+                <div class="mt-2 text-center hidden" id="resultInfo">
+                    <span class="text-muted" id="resultDimensions">0 x 0 px</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Toolbar -->
+        <div class="container">
+            <div class="toolbar glass-card">
+                <div class="toolbar-row">
+                    <div class="input-group">
+                        <label>Width (px)</label>
+                        <input type="number" id="widthInput" placeholder="Width" min="1" max="10000" value="800">
+                    </div>
+                    <div class="input-group">
+                        <label>Height (px)</label>
+                        <input type="number" id="heightInput" placeholder="Height" min="1" max="10000" value="600">
+                    </div>
+                    <div class="toggle-group">
+                        <div class="toggle active" id="aspectToggle"></div>
+                        <label>Lock Aspect Ratio</label>
+                    </div>
+                </div>
+
+                <div class="toolbar-row">
+                    <div class="input-group">
+                        <label>Resize Mode</label>
+                        <div class="aspect-buttons" id="modeButtons">
+                            <button class="aspect-btn active" data-mode="fit" title="Fit within dimensions, maintain aspect ratio">Fit</button>
+                            <button class="aspect-btn" data-mode="fill" title="Fill dimensions, crop excess">Fill</button>
+                            <button class="aspect-btn" data-mode="stretch" title="Stretch to exact dimensions">Stretch</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="toolbar-row">
+                    <div class="input-group">
+                        <label>Preset Sizes</label>
+                        <div class="aspect-buttons" id="presetButtons">
+                            <button class="aspect-btn" data-preset="640x480">640x480</button>
+                            <button class="aspect-btn" data-preset="800x600">800x600</button>
+                            <button class="aspect-btn" data-preset="1280x720">HD</button>
+                            <button class="aspect-btn" data-preset="1920x1080">Full HD</button>
+                            <button class="aspect-btn" data-preset="1080x1080">Instagram</button>
+                            <button class="aspect-btn" data-preset="1200x628">Facebook</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="toolbar-row">
+                    <div class="input-group">
+                        <label>Output Format</label>
+                        <div class="flex gap-1 items-center">
+                            <select id="formatSelect">
+                                <option value="png">PNG (Lossless)</option>
+                                <option value="jpg">JPG (Compressed)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="slider-group hidden" id="qualityGroup">
+                        <div class="slider-label">
+                            <span>JPG Quality</span>
+                            <span id="qualityValue">90%</span>
+                        </div>
+                        <input type="range" class="slider" id="qualitySlider" min="10" max="100" value="90">
+                    </div>
+                </div>
+
+                <div class="action-buttons">
+                    <button class="btn btn-secondary" id="resetBtn" disabled>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="1 4 1 10 7 10"></polyline>
+                            <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path>
+                        </svg>
+                        Reset
+                    </button>
+                    <button class="btn btn-primary" id="resizeBtn" disabled>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="15 3 21 3 21 9"></polyline>
+                            <polyline points="9 21 3 21 3 15"></polyline>
+                            <line x1="21" y1="3" x2="14" y2="10"></line>
+                            <line x1="3" y1="21" x2="10" y2="14"></line>
+                        </svg>
+                        Resize Image
+                    </button>
+                    <button class="btn btn-primary" id="downloadBtn" disabled>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                            <polyline points="7 10 12 15 17 10"></polyline>
+                            <line x1="12" y1="15" x2="12" y2="3"></line>
+                        </svg>
+                        Download
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script src="assets/js/utils.js"></script>
+    <script src="assets/js/resize.js"></script>
+</body>
+</html>
